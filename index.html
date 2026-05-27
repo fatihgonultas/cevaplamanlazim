@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffd6e8">
+  <title>İzniklim16.5'a bir soru</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink: #ff5f9e;
+      --rose: #ff2f75;
+      --blush: #fff2f8;
+      --lilac: #d9c2ff;
+      --ink: #5a2942;
+      --muted: #93687c;
+      --glass: rgba(255, 255, 255, 0.42);
+      --stroke: rgba(255, 255, 255, 0.62);
+      --shadow: 0 28px 70px rgba(154, 67, 112, 0.28);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      overflow-x: hidden;
+      background: #ffd6e8;
+    }
+
+    body {
+      min-height: 100svh;
+      margin: 0;
+      overflow-x: hidden;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 16%, rgba(255, 255, 255, 0.95) 0 7%, transparent 22%),
+        radial-gradient(circle at 88% 10%, rgba(255, 235, 250, 0.9) 0 9%, transparent 25%),
+        linear-gradient(135deg, #ffe0ef 0%, #ffd7e8 34%, #e7d4ff 70%, #f9efff 100%);
+    }
+
+    button {
+      font: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .page {
+      position: relative;
+      display: grid;
+      min-height: 100svh;
+      place-items: center;
+      isolation: isolate;
+      padding:
+        max(18px, var(--safe-top))
+        max(16px, var(--safe-right))
+        max(18px, var(--safe-bottom))
+        max(16px, var(--safe-left));
+    }
+
+    .decor {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .float {
+      position: absolute;
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 999px;
+      color: rgba(181, 55, 111, 0.64);
+      text-shadow: 0 8px 24px rgba(255, 80, 143, 0.2);
+      filter: drop-shadow(0 10px 24px rgba(164, 69, 126, 0.14));
+      animation: drift var(--duration, 10s) ease-in-out infinite alternate;
+      opacity: var(--opacity, 0.72);
+    }
+
+    .float::before {
+      content: attr(data-symbol);
+      font-size: var(--size, 24px);
+    }
+
+    .float:nth-child(1) { left: 6%; top: 11%; --size: 28px; --duration: 12s; }
+    .float:nth-child(2) { right: 8%; top: 15%; --size: 22px; --duration: 9s; animation-delay: -2s; }
+    .float:nth-child(3) { left: 15%; bottom: 13%; --size: 24px; --duration: 11s; animation-delay: -5s; }
+    .float:nth-child(4) { right: 13%; bottom: 17%; --size: 30px; --duration: 13s; animation-delay: -4s; }
+    .float:nth-child(5) { left: 42%; top: 6%; --size: 19px; --duration: 8s; animation-delay: -1s; }
+    .float:nth-child(6) { right: 2%; top: 48%; --size: 21px; --duration: 10s; animation-delay: -6s; }
+    .float:nth-child(7) { left: 3%; top: 45%; --size: 18px; --duration: 9s; animation-delay: -3s; }
+
+    .glow {
+      position: fixed;
+      width: 230px;
+      height: 230px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.34);
+      filter: blur(8px);
+      opacity: 0.55;
+      pointer-events: none;
+      animation: glowShift 12s ease-in-out infinite alternate;
+    }
+
+    .glow.one {
+      left: -82px;
+      bottom: 4%;
+    }
+
+    .glow.two {
+      right: -86px;
+      top: 2%;
+      width: 190px;
+      height: 190px;
+      animation-delay: -4s;
+    }
+
+    .card {
+      position: relative;
+      width: min(100%, 390px);
+      padding: clamp(26px, 7vw, 36px) clamp(20px, 6vw, 30px);
+      border: 1px solid var(--stroke);
+      border-radius: 34px;
+      background:
+        linear-gradient(150deg, rgba(255, 255, 255, 0.64), rgba(255, 255, 255, 0.27)),
+        var(--glass);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      text-align: center;
+      backdrop-filter: blur(22px) saturate(1.25);
+      -webkit-backdrop-filter: blur(22px) saturate(1.25);
+      animation: cardIn 760ms cubic-bezier(0.2, 0.86, 0.25, 1.08) both;
+    }
+
+    .card::before,
+    .card::after {
+      position: absolute;
+      content: "";
+      pointer-events: none;
+      border-radius: 999px;
+    }
+
+    .card::before {
+      inset: -78px auto auto -72px;
+      width: 168px;
+      height: 168px;
+      background: rgba(255, 112, 166, 0.18);
+    }
+
+    .card::after {
+      right: -64px;
+      bottom: -78px;
+      width: 182px;
+      height: 182px;
+      background: rgba(188, 145, 255, 0.22);
+    }
+
+    .content,
+    .result {
+      position: relative;
+      z-index: 1;
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      font-size: 0.94rem;
+      font-weight: 800;
+      letter-spacing: 0;
+      color: #b33f78;
+    }
+
+    .intro {
+      width: min(100%, 300px);
+      margin: 0 auto 24px;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 4vw, 1.05rem);
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    h1 {
+      width: min(100%, 330px);
+      margin: 0 auto 26px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2.15rem, 10vw, 3.05rem);
+      line-height: 0.98;
+      letter-spacing: 0;
+      color: #6f244c;
+      text-wrap: balance;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 64px;
+      margin-top: 2px;
+    }
+
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+      transform: translateZ(0);
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: translateY(2px) scale(0.98);
+    }
+
+    .yes {
+      min-width: 156px;
+      padding: 0 26px;
+      color: #fff;
+      font-size: 1.04rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--pink), var(--rose));
+      box-shadow: 0 15px 32px rgba(255, 47, 117, 0.32);
+    }
+
+    .yes:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 18px 38px rgba(255, 47, 117, 0.4);
+    }
+
+    .no {
+      min-width: 104px;
+      padding: 0 18px;
+      color: #92506f;
+      font-size: 0.94rem;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 10px 22px rgba(142, 65, 104, 0.13);
+    }
+
+    .no:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .no.is-floating {
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      margin: 0;
+      transition: left 260ms cubic-bezier(0.23, 1, 0.32, 1), top 260ms cubic-bezier(0.23, 1, 0.32, 1), transform 180ms ease;
+    }
+
+    .no.is-fleeing {
+      animation: wiggle 320ms ease;
+    }
+
+    .result {
+      display: none;
+      min-height: 212px;
+      place-items: center;
+      padding: 22px 4px;
+    }
+
+    .result p {
+      width: min(100%, 315px);
+      margin: 0;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2rem, 8.2vw, 2.85rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: 0;
+      color: #6f244c;
+      text-wrap: balance;
+      animation: resultIn 520ms ease both;
+    }
+
+    .card.accepted .content {
+      display: none;
+    }
+
+    .card.accepted .result {
+      display: grid;
+    }
+
+    .card.accepted {
+      animation: acceptPulse 620ms ease both;
+    }
+
+    .burst-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .burst-piece {
+      position: absolute;
+      left: 50%;
+      top: 54%;
+      font-size: var(--piece-size, 22px);
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      animation: burst 980ms cubic-bezier(0.18, 0.88, 0.22, 1) forwards;
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translate3d(0, 0, 0) rotate(-6deg);
+      }
+      100% {
+        transform: translate3d(var(--x, 18px), var(--y, -26px), 0) rotate(10deg);
+      }
+    }
+
+    @keyframes glowShift {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      100% {
+        transform: translate3d(28px, -20px, 0) scale(1.08);
+      }
+    }
+
+    @keyframes cardIn {
+      0% {
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes wiggle {
+      0%, 100% {
+        transform: rotate(0deg) scale(1);
+      }
+      28% {
+        transform: rotate(-8deg) scale(1.04);
+      }
+      62% {
+        transform: rotate(7deg) scale(1.02);
+      }
+    }
+
+    @keyframes acceptPulse {
+      0% {
+        transform: scale(1);
+      }
+      55% {
+        transform: scale(1.025);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes resultIn {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes burst {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.65) rotate(0deg);
+      }
+      14% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform:
+          translate(calc(-50% + var(--tx)), calc(-50% + var(--ty)))
+          scale(var(--scale, 1))
+          rotate(var(--rotate, 180deg));
+      }
+    }
+
+    @media (max-width: 370px) {
+      .card {
+        padding: 24px 18px;
+        border-radius: 30px;
+      }
+
+      .actions {
+        gap: 9px;
+      }
+
+      .yes {
+        min-width: 144px;
+        padding-inline: 22px;
+      }
+
+      .no {
+        min-width: 98px;
+        padding-inline: 14px;
+      }
+    }
+
+    @media (min-width: 700px) {
+      .card {
+        width: min(420px, 100%);
+      }
+
+      .page {
+        padding-block: 32px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="decor" aria-hidden="true">
+      <span class="glow one"></span>
+      <span class="glow two"></span>
+      <span class="float" data-symbol="💖"></span>
+      <span class="float" data-symbol="🌸"></span>
+      <span class="float" data-symbol="✨"></span>
+      <span class="float" data-symbol="🌷"></span>
+      <span class="float" data-symbol="♡"></span>
+      <span class="float" data-symbol="✦"></span>
+      <span class="float" data-symbol="❀"></span>
+    </div>
+
+    <section class="card" aria-live="polite">
+      <div class="content">
+        <p class="kicker">İZNİKLEE 🌸</p>
+        <p class="intro">30.05.2026 (Cuma Sonrası, Allah kabul etsin.)</p>
+        <h1>Benimle buluşur musun?</h1>
+
+        <div class="actions">
+          <button class="btn yes" type="button">Evet 💖</button>
+          <button class="btn no" type="button">Hayır 😅</button>
+        </div>
+      </div>
+
+      <div class="result">
+        <p>Detayları WhatsApp'tan ileteceğim 🌹</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="burst-layer" aria-hidden="true"></div>
+
+  <script>
+    const card = document.querySelector(".card");
+    const yesButton = document.querySelector(".yes");
+    const noButton = document.querySelector(".no");
+    const burstLayer = document.querySelector(".burst-layer");
+
+    let noMoveCount = 0;
+    let lastNoPosition = null;
+    let lastApproachMove = 0;
+    let noPlaceholder = null;
+
+    // iPhone Safari'de adres çubuğu değişimlerine uyumlu gerçek görünür alanı alır.
+    function getViewport() {
+      const viewport = window.visualViewport;
+
+      return {
+        width: viewport ? viewport.width : window.innerWidth,
+        height: viewport ? viewport.height : window.innerHeight,
+        offsetLeft: viewport ? viewport.offsetLeft : 0,
+        offsetTop: viewport ? viewport.offsetTop : 0
+      };
+    }
+
+    function randomBetween(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function distanceBetween(a, b) {
+      if (!a || !b) {
+        return Infinity;
+      }
+
+      return Math.hypot(a.left - b.left, a.top - b.top);
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    // Butonu güvenli kenar payı içinde, önceki konumundan belirgin uzağa taşır.
+    function pickNoButtonPosition() {
+      const viewport = getViewport();
+      const rect = noButton.getBoundingClientRect();
+      const edge = 14;
+      const minLeft = viewport.offsetLeft + edge;
+      const minTop = viewport.offsetTop + edge;
+      const maxLeft = Math.max(minLeft, viewport.offsetLeft + viewport.width - rect.width - edge);
+      const maxTop = Math.max(minTop, viewport.offsetTop + viewport.height - rect.height - edge);
+      const current = {
+        left: rect.left,
+        top: rect.top
+      };
+
+      let best = {
+        left: clamp(randomBetween(minLeft, maxLeft), minLeft, maxLeft),
+        top: clamp(randomBetween(minTop, maxTop), minTop, maxTop)
+      };
+
+      for (let i = 0; i < 12; i += 1) {
+        const candidate = {
+          left: randomBetween(minLeft, maxLeft),
+          top: randomBetween(minTop, maxTop)
+        };
+
+        if (
+          distanceBetween(candidate, current) > distanceBetween(best, current) &&
+          distanceBetween(candidate, lastNoPosition) > 80
+        ) {
+          best = candidate;
+        }
+      }
+
+      lastNoPosition = best;
+      return best;
+    }
+
+    function detachNoButton(rect) {
+      noPlaceholder = document.createElement("span");
+      noPlaceholder.setAttribute("aria-hidden", "true");
+      noPlaceholder.style.width = `${rect.width}px`;
+      noPlaceholder.style.height = `${rect.height}px`;
+      noPlaceholder.style.visibility = "hidden";
+      noPlaceholder.style.flex = "0 0 auto";
+
+      noButton.parentElement.insertBefore(noPlaceholder, noButton);
+      document.body.appendChild(noButton);
+    }
+
+    // "Hayır" butonu ilk kaçışta fixed olur; sonra viewport içinde serbestçe kaçar.
+    function moveNoButton(event) {
+      if (card.classList.contains("accepted")) {
+        return;
+      }
+
+      if (event) {
+        event.preventDefault();
+      }
+
+      noMoveCount += 1;
+      const rect = noButton.getBoundingClientRect();
+
+      if (!noButton.classList.contains("is-floating")) {
+        noButton.style.width = `${rect.width}px`;
+        noButton.style.height = `${rect.height}px`;
+        noButton.style.left = `${rect.left}px`;
+        noButton.style.top = `${rect.top}px`;
+        detachNoButton(rect);
+        noButton.classList.add("is-floating");
+      }
+
+      const nextPosition = pickNoButtonPosition();
+      noButton.style.left = `${nextPosition.left}px`;
+      noButton.style.top = `${nextPosition.top}px`;
+      noButton.classList.remove("is-fleeing");
+
+      window.requestAnimationFrame(() => {
+        noButton.classList.add("is-fleeing");
+      });
+
+      if (navigator.vibrate && noMoveCount % 2 === 1) {
+        navigator.vibrate(18);
+      }
+    }
+
+    // Desktopta butona tam değmeden yaklaşınca kaçmasını sağlar.
+    function handleNoButtonApproach(event) {
+      if (event.pointerType === "touch" || card.classList.contains("accepted")) {
+        return;
+      }
+
+      const now = Date.now();
+
+      if (now - lastApproachMove < 220) {
+        return;
+      }
+
+      const rect = noButton.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const nearX = rect.width / 2 + 48;
+      const nearY = rect.height / 2 + 48;
+
+      if (Math.abs(event.clientX - centerX) < nearX && Math.abs(event.clientY - centerY) < nearY) {
+        lastApproachMove = now;
+        moveNoButton();
+      }
+    }
+
+    // Kabul anında kısa, ekranda kalıcı olmayan kalp/çiçek patlaması üretir.
+    function launchBurst() {
+      const symbols = ["💖", "🌸", "✨", "🌹", "💕", "✦"];
+      const pieceCount = 30;
+
+      burstLayer.textContent = "";
+
+      for (let i = 0; i < pieceCount; i += 1) {
+        const piece = document.createElement("span");
+        const angle = (Math.PI * 2 * i) / pieceCount + randomBetween(-0.22, 0.22);
+        const distance = randomBetween(96, 190);
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance - randomBetween(8, 42);
+
+        piece.className = "burst-piece";
+        piece.textContent = symbols[i % symbols.length];
+        piece.style.setProperty("--tx", `${tx}px`);
+        piece.style.setProperty("--ty", `${ty}px`);
+        piece.style.setProperty("--rotate", `${randomBetween(-220, 220)}deg`);
+        piece.style.setProperty("--scale", randomBetween(0.72, 1.18).toFixed(2));
+        piece.style.setProperty("--piece-size", `${randomBetween(16, 27)}px`);
+        piece.style.animationDelay = `${randomBetween(0, 90)}ms`;
+        burstLayer.appendChild(piece);
+      }
+
+      window.setTimeout(() => {
+        burstLayer.textContent = "";
+      }, 1300);
+    }
+
+    // Sonuç ekranında yalnızca istenen mesaj kalır.
+    function acceptDate() {
+      card.classList.add("accepted");
+      noButton.style.display = "none";
+      launchBurst();
+
+      if (navigator.vibrate) {
+        navigator.vibrate([25, 35, 25]);
+      }
+    }
+
+    noButton.addEventListener("pointerenter", moveNoButton);
+    noButton.addEventListener("mouseenter", moveNoButton);
+    noButton.addEventListener("touchstart", moveNoButton, { passive: false });
+    noButton.addEventListener("click", moveNoButton);
+    yesButton.addEventListener("click", acceptDate);
+    document.addEventListener("pointermove", handleNoButtonApproach);
+
+    window.addEventListener("resize", () => {
+      if (!noButton.classList.contains("is-floating")) {
+        return;
+      }
+
+      const nextPosition = pickNoButtonPosition();
+      noButton.style.left = `${nextPosition.left}px`;
+      noButton.style.top = `${nextPosition.top}px`;
+    });
+  </script>
+</body>
+</html>
