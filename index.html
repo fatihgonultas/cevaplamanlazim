@@ -4,17 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#ffd6e8">
-  <title>Plan hazır</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <title>Buluşmaya kalan süre</title>
   <style>
     :root {
-      --pink: #ff5f9e;
-      --rose: #ff2f75;
-      --lilac: #d9c2ff;
       --ink: #642648;
-      --muted: #92657b;
+      --muted: #87536c;
       --glass: rgba(255, 255, 255, 0.43);
       --stroke: rgba(255, 255, 255, 0.64);
       --shadow: 0 28px 70px rgba(154, 67, 112, 0.28);
@@ -41,17 +35,15 @@
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at 12% 16%, rgba(255, 255, 255, 0.94) 0 7%, transparent 23%),
-        radial-gradient(circle at 88% 10%, rgba(255, 237, 251, 0.92) 0 9%, transparent 26%),
+        radial-gradient(circle at 12% 16%, rgba(255, 255, 255, 0.9) 0 7%, transparent 23%),
+        radial-gradient(circle at 88% 10%, rgba(255, 237, 251, 0.86) 0 9%, transparent 26%),
         linear-gradient(135deg, #ffe0ef 0%, #ffd7e8 35%, #e8d5ff 72%, #fff2fb 100%);
     }
 
     .page {
-      position: relative;
       display: grid;
       min-height: 100svh;
       place-items: center;
-      isolation: isolate;
       padding:
         max(18px, var(--safe-top))
         max(16px, var(--safe-right))
@@ -59,76 +51,11 @@
         max(16px, var(--safe-left));
     }
 
-    .decor,
-    .burst-layer {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .decor {
-      z-index: -1;
-    }
-
-    .glow {
-      position: absolute;
-      width: 230px;
-      height: 230px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.34);
-      filter: blur(8px);
-      opacity: 0.58;
-      animation: glowShift 12s ease-in-out infinite alternate;
-    }
-
-    .glow.one {
-      left: -82px;
-      bottom: 4%;
-    }
-
-    .glow.two {
-      right: -86px;
-      top: 2%;
-      width: 190px;
-      height: 190px;
-      animation-delay: -4s;
-    }
-
-    .float {
-      position: absolute;
-      display: grid;
-      width: 42px;
-      height: 42px;
-      place-items: center;
-      border-radius: 999px;
-      opacity: var(--opacity, 0.72);
-      color: rgba(181, 55, 111, 0.64);
-      filter: drop-shadow(0 10px 24px rgba(164, 69, 126, 0.14));
-      text-shadow: 0 8px 24px rgba(255, 80, 143, 0.2);
-      animation: drift var(--duration, 10s) ease-in-out infinite alternate;
-    }
-
-    .float::before {
-      content: attr(data-symbol);
-      font-size: var(--size, 24px);
-    }
-
-    .float:nth-child(3) { left: 6%; top: 11%; --size: 28px; --duration: 12s; }
-    .float:nth-child(4) { right: 8%; top: 15%; --size: 22px; --duration: 9s; animation-delay: -2s; }
-    .float:nth-child(5) { left: 15%; bottom: 13%; --size: 24px; --duration: 11s; animation-delay: -5s; }
-    .float:nth-child(6) { right: 13%; bottom: 17%; --size: 30px; --duration: 13s; animation-delay: -4s; }
-    .float:nth-child(7) { left: 42%; top: 6%; --size: 19px; --duration: 8s; animation-delay: -1s; }
-    .float:nth-child(8) { right: 2%; top: 48%; --size: 21px; --duration: 10s; animation-delay: -6s; }
-    .float:nth-child(9) { left: 3%; top: 45%; --size: 18px; --duration: 9s; animation-delay: -3s; }
-
     .card {
-      position: relative;
       width: min(100%, 390px);
-      padding: clamp(26px, 7vw, 36px) clamp(18px, 5.6vw, 30px);
+      padding: clamp(24px, 7vw, 34px) clamp(16px, 5.6vw, 28px);
       border: 1px solid var(--stroke);
-      border-radius: 34px;
-      overflow: hidden;
+      border-radius: 30px;
       text-align: center;
       background:
         linear-gradient(150deg, rgba(255, 255, 255, 0.66), rgba(255, 255, 255, 0.28)),
@@ -136,75 +63,32 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(22px) saturate(1.25);
       -webkit-backdrop-filter: blur(22px) saturate(1.25);
-      animation: cardIn 760ms cubic-bezier(0.2, 0.86, 0.25, 1.08) both;
     }
 
-    .card::before,
-    .card::after {
-      position: absolute;
-      content: "";
-      border-radius: 999px;
-      pointer-events: none;
-    }
-
-    .card::before {
-      inset: -78px auto auto -72px;
-      width: 168px;
-      height: 168px;
-      background: rgba(255, 112, 166, 0.18);
-    }
-
-    .card::after {
-      right: -64px;
-      bottom: -78px;
-      width: 182px;
-      height: 182px;
-      background: rgba(188, 145, 255, 0.22);
-    }
-
-    .content {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      gap: 14px;
-      justify-items: center;
+    .pixel-art {
+      width: min(78vw, 300px);
+      max-height: 42vh;
+      object-fit: cover;
+      border-radius: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.75);
+      box-shadow: 0 18px 45px rgba(190, 70, 120, 0.25);
+      display: block;
+      margin: 0 auto 22px;
     }
 
     h1 {
       width: min(100%, 320px);
-      margin: 0;
-      font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(2.18rem, 9vw, 3rem);
-      font-weight: 700;
-      line-height: 0.98;
-      letter-spacing: 0;
+      margin: 0 auto 16px;
       color: #6f244c;
-      text-wrap: balance;
-    }
-
-    .message {
-      width: min(100%, 310px);
-      margin: 0;
-      color: var(--muted);
-      font-size: clamp(0.98rem, 3.8vw, 1.05rem);
-      font-weight: 700;
-      line-height: 1.45;
+      font-size: clamp(1.42rem, 6vw, 2rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: 0;
       text-wrap: balance;
     }
 
     .countdown {
       width: 100%;
-      margin-top: 6px;
-    }
-
-    .countdown-title {
-      width: min(100%, 300px);
-      margin: 0 auto 12px;
-      color: #a83e74;
-      font-size: clamp(0.88rem, 3.5vw, 0.98rem);
-      font-weight: 800;
-      line-height: 1.25;
-      text-wrap: balance;
     }
 
     .countdown-grid {
@@ -228,7 +112,7 @@
     .countdown-number {
       display: block;
       color: #d72d73;
-      font-size: clamp(1.35rem, 6vw, 1.76rem);
+      font-size: clamp(1.28rem, 5.8vw, 1.72rem);
       font-weight: 800;
       line-height: 1;
       font-variant-numeric: tabular-nums;
@@ -241,8 +125,8 @@
     .countdown-label {
       display: block;
       margin-top: 6px;
-      color: #87536c;
-      font-size: clamp(0.62rem, 2.7vw, 0.72rem);
+      color: var(--muted);
+      font-size: clamp(0.6rem, 2.7vw, 0.72rem);
       font-weight: 800;
       line-height: 1.1;
     }
@@ -250,7 +134,7 @@
     .expired-message {
       display: none;
       width: min(100%, 310px);
-      margin: 8px auto 0;
+      margin: 0 auto;
       padding: 17px 15px;
       border: 1px solid rgba(255, 255, 255, 0.66);
       border-radius: 22px;
@@ -263,56 +147,12 @@
       text-wrap: balance;
     }
 
-    .countdown.is-finished .countdown-title,
     .countdown.is-finished .countdown-grid {
       display: none;
     }
 
     .countdown.is-finished .expired-message {
       display: block;
-    }
-
-    .burst-layer {
-      z-index: 5;
-    }
-
-    .burst-piece {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      opacity: 0;
-      font-size: var(--piece-size, 20px);
-      transform: translate(-50%, -50%);
-      animation: burst 940ms cubic-bezier(0.18, 0.88, 0.22, 1) forwards;
-    }
-
-    @keyframes drift {
-      0% {
-        transform: translate3d(0, 0, 0) rotate(-6deg);
-      }
-      100% {
-        transform: translate3d(var(--x, 18px), var(--y, -26px), 0) rotate(10deg);
-      }
-    }
-
-    @keyframes glowShift {
-      0% {
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-      100% {
-        transform: translate3d(28px, -20px, 0) scale(1.08);
-      }
-    }
-
-    @keyframes cardIn {
-      0% {
-        opacity: 0;
-        transform: translateY(24px) scale(0.96);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
     }
 
     @keyframes numberTick {
@@ -327,27 +167,21 @@
       }
     }
 
-    @keyframes burst {
-      0% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.65) rotate(0deg);
-      }
-      14% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-        transform:
-          translate(calc(-50% + var(--tx)), calc(-50% + var(--ty)))
-          scale(var(--scale, 1))
-          rotate(var(--rotate, 180deg));
-      }
-    }
-
-    @media (max-width: 370px) {
+    @media (max-width: 380px) {
       .card {
-        padding: 24px 16px;
-        border-radius: 30px;
+        padding: 22px 14px;
+        border-radius: 28px;
+      }
+
+      .pixel-art {
+        width: min(76vw, 260px);
+        max-height: 38vh;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        margin-bottom: 14px;
+        font-size: clamp(1.3rem, 6.2vw, 1.64rem);
       }
 
       .countdown-grid {
@@ -384,58 +218,40 @@
 </head>
 <body>
   <main class="page">
-    <div class="decor" aria-hidden="true">
-      <span class="glow one"></span>
-      <span class="glow two"></span>
-      <span class="float" data-symbol="💖"></span>
-      <span class="float" data-symbol="🌸"></span>
-      <span class="float" data-symbol="✨"></span>
-      <span class="float" data-symbol="🌷"></span>
-      <span class="float" data-symbol="♡"></span>
-      <span class="float" data-symbol="✦"></span>
-      <span class="float" data-symbol="❀"></span>
-    </div>
-
     <section class="card" aria-live="polite">
-      <div class="content">
-        <h1></h1>
-        <p class="message">🌹</p>
+      <img src="./betul-pixel.png" alt="Pixel art" class="pixel-art" />
 
-        <div class="countdown" id="countdown">
-          <p class="countdown-title">Betül ile buluşmama kalan süre</p>
+      <h1>Buluşmaya kalan süre</h1>
 
-          <div class="countdown-grid" aria-label="Geri sayım">
-            <div class="countdown-box">
-              <span class="countdown-number" data-unit="days">00</span>
-              <span class="countdown-label">Gün</span>
-            </div>
-            <div class="countdown-box">
-              <span class="countdown-number" data-unit="hours">00</span>
-              <span class="countdown-label">Saat</span>
-            </div>
-            <div class="countdown-box">
-              <span class="countdown-number" data-unit="minutes">00</span>
-              <span class="countdown-label">Dakika</span>
-            </div>
-            <div class="countdown-box">
-              <span class="countdown-number" data-unit="seconds">00</span>
-              <span class="countdown-label">Saniye</span>
-            </div>
+      <div class="countdown" id="countdown">
+        <div class="countdown-grid" aria-label="Geri sayım">
+          <div class="countdown-box">
+            <span class="countdown-number" data-unit="days">00</span>
+            <span class="countdown-label">Gün</span>
           </div>
-
-          <p class="expired-message">Vakit geldi! Hazırsan çıkıyoruz 🌸</p>
+          <div class="countdown-box">
+            <span class="countdown-number" data-unit="hours">00</span>
+            <span class="countdown-label">Saat</span>
+          </div>
+          <div class="countdown-box">
+            <span class="countdown-number" data-unit="minutes">00</span>
+            <span class="countdown-label">Dakika</span>
+          </div>
+          <div class="countdown-box">
+            <span class="countdown-number" data-unit="seconds">00</span>
+            <span class="countdown-label">Saniye</span>
+          </div>
         </div>
+
+        <p class="expired-message">Vakit geldi 🌸</p>
       </div>
     </section>
   </main>
-
-  <div class="burst-layer" aria-hidden="true"></div>
 
   <script>
     const targetDate = new Date("2026-05-29T16:00:00+03:00");
 
     const countdown = document.getElementById("countdown");
-    const burstLayer = document.querySelector(".burst-layer");
     const numberElements = {
       days: document.querySelector('[data-unit="days"]'),
       hours: document.querySelector('[data-unit="hours"]'),
@@ -473,7 +289,6 @@
       }
     }
 
-    // Hedef tarihe kalan süreyi Europe/Istanbul saatini içeren sabit hedefe göre hesaplar.
     function updateCountdown() {
       const remaining = targetDate.getTime() - Date.now();
 
@@ -494,43 +309,8 @@
       setNumber("seconds", seconds);
     }
 
-    function randomBetween(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    // Açılışta kısa ve hafif bir kalp/çiçek efekti üretir.
-    function launchOpeningBurst() {
-      const symbols = ["💖", "🌸", "✨", "🌹", "💕", "✦"];
-      const pieceCount = 18;
-
-      burstLayer.textContent = "";
-
-      for (let i = 0; i < pieceCount; i += 1) {
-        const piece = document.createElement("span");
-        const angle = (Math.PI * 2 * i) / pieceCount + randomBetween(-0.2, 0.2);
-        const distance = randomBetween(72, 142);
-        const tx = Math.cos(angle) * distance;
-        const ty = Math.sin(angle) * distance - randomBetween(8, 34);
-
-        piece.className = "burst-piece";
-        piece.textContent = symbols[i % symbols.length];
-        piece.style.setProperty("--tx", `${tx}px`);
-        piece.style.setProperty("--ty", `${ty}px`);
-        piece.style.setProperty("--rotate", `${randomBetween(-180, 180)}deg`);
-        piece.style.setProperty("--scale", randomBetween(0.7, 1.05).toFixed(2));
-        piece.style.setProperty("--piece-size", `${randomBetween(15, 24)}px`);
-        piece.style.animationDelay = `${randomBetween(0, 80)}ms`;
-        burstLayer.appendChild(piece);
-      }
-
-      window.setTimeout(() => {
-        burstLayer.textContent = "";
-      }, 1200);
-    }
-
     updateCountdown();
     countdownTimer = window.setInterval(updateCountdown, 1000);
-    window.setTimeout(launchOpeningBurst, 420);
   </script>
 </body>
 </html>
