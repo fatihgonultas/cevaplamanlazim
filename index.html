@@ -4,14 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#ffd6e8">
-  <title>Buluşmaya kalan süre</title>
+  <title>Minik bir oyun</title>
   <style>
     :root {
       --ink: #642648;
-      --muted: #87536c;
-      --glass: rgba(255, 255, 255, 0.43);
-      --stroke: rgba(255, 255, 255, 0.64);
-      --shadow: 0 28px 70px rgba(154, 67, 112, 0.28);
+      --muted: #8c5972;
+      --pink: #f43f8f;
+      --rose: #e11d62;
+      --lilac: #c9b8ff;
+      --glass: rgba(255, 255, 255, 0.42);
+      --stroke: rgba(255, 255, 255, 0.66);
+      --shadow: 0 28px 70px rgba(145, 54, 105, 0.28);
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-right: env(safe-area-inset-right, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -20,27 +23,36 @@
 
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     html {
+      width: 100%;
       min-height: 100%;
       overflow-x: hidden;
       background: #ffd6e8;
     }
 
     body {
+      width: 100%;
       min-height: 100svh;
       margin: 0;
       overflow-x: hidden;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Inter, ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at 12% 16%, rgba(255, 255, 255, 0.9) 0 7%, transparent 23%),
-        radial-gradient(circle at 88% 10%, rgba(255, 237, 251, 0.86) 0 9%, transparent 26%),
-        linear-gradient(135deg, #ffe0ef 0%, #ffd7e8 35%, #e8d5ff 72%, #fff2fb 100%);
+        radial-gradient(circle at 14% 12%, rgba(255, 255, 255, 0.92) 0 7%, transparent 25%),
+        radial-gradient(circle at 88% 14%, rgba(255, 238, 252, 0.9) 0 9%, transparent 28%),
+        radial-gradient(circle at 50% 96%, rgba(255, 255, 255, 0.7) 0 10%, transparent 32%),
+        linear-gradient(135deg, #ffe0ef 0%, #ffd4e6 34%, #ead8ff 72%, #fff2fb 100%);
+    }
+
+    button {
+      font: inherit;
     }
 
     .page {
+      position: relative;
       display: grid;
       min-height: 100svh;
       place-items: center;
@@ -49,148 +61,395 @@
         max(16px, var(--safe-right))
         max(18px, var(--safe-bottom))
         max(16px, var(--safe-left));
+      isolation: isolate;
     }
+
+    .page::before {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      content: "";
+      opacity: 0.58;
+      background-image:
+        linear-gradient(45deg, transparent 46%, rgba(255, 255, 255, 0.42) 47% 53%, transparent 54%),
+        linear-gradient(-45deg, transparent 46%, rgba(255, 255, 255, 0.28) 47% 53%, transparent 54%);
+      background-size: 26px 26px;
+      -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 78%, transparent);
+      mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 78%, transparent);
+      z-index: -2;
+    }
+
+    /* CSS-only kalp, çiçek ve parıltı dekorları. */
+    .decor {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .spark,
+    .heart,
+    .flower {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      color: rgba(211, 38, 113, 0.52);
+      text-shadow: 0 8px 24px rgba(178, 49, 115, 0.2);
+      animation: floatDecor 7s ease-in-out infinite;
+      user-select: none;
+    }
+
+    .spark {
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 1.25rem;
+    }
+
+    .heart {
+      font-size: 1.4rem;
+    }
+
+    .flower {
+      color: rgba(148, 93, 207, 0.5);
+      font-size: 1.2rem;
+    }
+
+    .d1 { left: 8%; top: 13%; animation-delay: -1s; }
+    .d2 { right: 9%; top: 19%; animation-delay: -3s; }
+    .d3 { left: 14%; bottom: 18%; animation-delay: -5s; }
+    .d4 { right: 14%; bottom: 15%; animation-delay: -2s; }
+    .d5 { left: 48%; top: 8%; animation-delay: -4s; }
+    .d6 { right: 5%; top: 53%; animation-delay: -6s; }
 
     .card {
       width: min(100%, 390px);
-      padding: clamp(24px, 7vw, 34px) clamp(16px, 5.6vw, 28px);
+      padding: clamp(28px, 7vw, 38px) clamp(18px, 5.8vw, 30px);
       border: 1px solid var(--stroke);
       border-radius: 30px;
       text-align: center;
       background:
-        linear-gradient(150deg, rgba(255, 255, 255, 0.66), rgba(255, 255, 255, 0.28)),
+        linear-gradient(155deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.28)),
         var(--glass);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(22px) saturate(1.25);
-      -webkit-backdrop-filter: blur(22px) saturate(1.25);
+      backdrop-filter: blur(24px) saturate(1.24);
+      -webkit-backdrop-filter: blur(24px) saturate(1.24);
+      transform: translateZ(0);
     }
 
-    .pixel-art {
-      width: min(78vw, 300px);
-      max-height: 42vh;
-      object-fit: cover;
-      border-radius: 24px;
-      border: 3px solid rgba(255, 255, 255, 0.75);
-      box-shadow: 0 18px 45px rgba(190, 70, 120, 0.25);
-      display: block;
-      margin: 0 auto 22px;
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 58px;
+      height: 58px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.28));
+      box-shadow: 0 14px 32px rgba(210, 45, 122, 0.18);
+      font-size: 1.9rem;
+      animation: softBounce 3.4s ease-in-out infinite;
     }
 
     h1 {
-      width: min(100%, 320px);
-      margin: 0 auto 16px;
+      margin: 0 0 12px;
       color: #6f244c;
-      font-size: clamp(1.42rem, 6vw, 2rem);
-      font-weight: 800;
+      font-size: clamp(1.55rem, 6vw, 2.02rem);
+      font-weight: 850;
       line-height: 1.12;
       letter-spacing: 0;
       text-wrap: balance;
     }
 
-    .countdown {
-      width: 100%;
-    }
-
-    .countdown-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
-      width: 100%;
-    }
-
-    .countdown-box {
-      min-width: 0;
-      padding: 13px 5px 11px;
-      border: 1px solid rgba(255, 255, 255, 0.64);
-      border-radius: 18px;
-      background: linear-gradient(160deg, rgba(255, 255, 255, 0.69), rgba(255, 255, 255, 0.31));
-      box-shadow: 0 12px 26px rgba(139, 57, 104, 0.12);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-
-    .countdown-number {
-      display: block;
-      color: #d72d73;
-      font-size: clamp(1.28rem, 5.8vw, 1.72rem);
-      font-weight: 800;
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .countdown-number.tick {
-      animation: numberTick 280ms ease;
-    }
-
-    .countdown-label {
-      display: block;
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: clamp(0.6rem, 2.7vw, 0.72rem);
-      font-weight: 800;
-      line-height: 1.1;
-    }
-
-    .expired-message {
-      display: none;
+    .question {
       width: min(100%, 310px);
       margin: 0 auto;
-      padding: 17px 15px;
-      border: 1px solid rgba(255, 255, 255, 0.66);
-      border-radius: 22px;
-      background: rgba(255, 255, 255, 0.48);
-      box-shadow: 0 14px 30px rgba(139, 57, 104, 0.13);
-      color: #7a2a51;
-      font-size: clamp(1.02rem, 4.2vw, 1.14rem);
-      font-weight: 800;
+      color: #7a2d53;
+      font-size: clamp(1.05rem, 4.3vw, 1.22rem);
+      font-weight: 750;
       line-height: 1.35;
       text-wrap: balance;
     }
 
-    .countdown.is-finished .countdown-grid {
+    .hint {
+      min-height: 48px;
+      margin: 18px auto 22px;
+      color: var(--muted);
+      font-size: clamp(0.95rem, 3.8vw, 1.03rem);
+      font-weight: 650;
+      line-height: 1.35;
+      transition: opacity 220ms ease, transform 220ms ease;
+      text-wrap: balance;
+    }
+
+    .hint.is-changing {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-items: center;
+      justify-items: center;
+      width: 100%;
+    }
+
+    .yes-button,
+    .no-button {
+      min-height: 54px;
+      border: 0;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition:
+        transform 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        width 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        height 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        padding 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        border-radius 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        font-size 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+        opacity 260ms ease,
+        box-shadow 360ms ease;
+      will-change: transform;
+    }
+
+    .yes-button {
+      width: min(100%, var(--yes-width, 220px));
+      padding: var(--yes-padding, 16px 24px);
+      border-radius: 999px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.45), transparent 30%),
+        linear-gradient(135deg, #ff5aa5 0%, #f43f8f 38%, #e11d62 100%);
+      box-shadow: 0 18px 36px rgba(223, 38, 111, 0.32);
+      font-size: var(--yes-font, 1.06rem);
+      font-weight: 850;
+      letter-spacing: 0;
+      transform: scale(var(--yes-scale, 1));
+    }
+
+    .yes-button:active {
+      transform: scale(calc(var(--yes-scale, 1) * 0.98));
+    }
+
+    .no-button {
+      width: min(74%, 180px);
+      padding: 12px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.78);
+      border-radius: 999px;
+      color: #8a5570;
+      background: rgba(255, 255, 255, 0.58);
+      box-shadow: 0 12px 24px rgba(124, 47, 87, 0.1);
+      font-size: var(--no-font, 0.98rem);
+      font-weight: 750;
+      opacity: var(--no-opacity, 1);
+      transform: scale(var(--no-scale, 1));
+    }
+
+    .no-button:active {
+      transform: scale(calc(var(--no-scale, 1) * 0.96));
+    }
+
+    .yes-button.is-destiny {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: grid;
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      padding: max(24px, var(--safe-top)) max(18px, var(--safe-right)) max(24px, var(--safe-bottom)) max(18px, var(--safe-left));
+      place-items: center;
+      border-radius: 0;
+      font-size: clamp(2rem, 12vw, 5.5rem);
+      line-height: 1.05;
+      animation: takeover 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .final {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
       display: none;
+      min-height: 100svh;
+      place-items: center;
+      padding:
+        max(18px, var(--safe-top))
+        max(16px, var(--safe-right))
+        max(18px, var(--safe-bottom))
+        max(16px, var(--safe-left));
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.86) 0 9%, transparent 30%),
+        linear-gradient(135deg, #ffd9eb 0%, #f9cceb 43%, #dfd1ff 100%);
     }
 
-    .countdown.is-finished .expired-message {
-      display: block;
+    .final.is-visible {
+      display: grid;
     }
 
-    @keyframes numberTick {
-      0% {
-        transform: translateY(0) scale(1);
-      }
-      45% {
-        transform: translateY(-3px) scale(1.04);
-      }
+    .final-card {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 380px);
+      padding: clamp(30px, 8vw, 44px) clamp(20px, 6vw, 32px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 30px;
+      text-align: center;
+      background: linear-gradient(155deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.34));
+      box-shadow: 0 28px 70px rgba(145, 54, 105, 0.28);
+      backdrop-filter: blur(24px) saturate(1.2);
+      -webkit-backdrop-filter: blur(24px) saturate(1.2);
+      animation: finalPop 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .final-icon {
+      display: inline-grid;
+      width: 74px;
+      height: 74px;
+      margin-bottom: 18px;
+      place-items: center;
+      border-radius: 26px;
+      color: #fff;
+      background: linear-gradient(135deg, #ff5aa5, #e11d62);
+      box-shadow: 0 18px 36px rgba(223, 38, 111, 0.28);
+      font-size: 2.4rem;
+      animation: heartBeat 1.3s ease-in-out infinite;
+    }
+
+    .final h2 {
+      margin: 0 0 12px;
+      color: #6f244c;
+      font-size: clamp(1.8rem, 7vw, 2.35rem);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .final-message {
+      margin: 0;
+      color: #7b2d54;
+      font-size: clamp(1.08rem, 4.4vw, 1.25rem);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .final-sub {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 3.8vw, 1.08rem);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .confetti {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .confetti span {
+      position: absolute;
+      left: var(--x);
+      top: -18px;
+      font-size: var(--size);
+      animation: confettiFall var(--duration) linear var(--delay) infinite;
+      transform: rotate(var(--rotate));
+      opacity: 0.92;
+    }
+
+    @keyframes floatDecor {
+      0%,
       100% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+      }
+
+      50% {
+        transform: translate3d(0, -12px, 0) rotate(5deg);
+      }
+    }
+
+    @keyframes softBounce {
+      0%,
+      100% {
+        transform: translateY(0) rotate(-2deg);
+      }
+
+      50% {
+        transform: translateY(-7px) rotate(3deg);
+      }
+    }
+
+    @keyframes takeover {
+      0% {
+        transform: scale(0.82);
+        border-radius: 999px;
+      }
+
+      70% {
+        transform: scale(1.02);
+      }
+
+      100% {
+        transform: scale(1);
+        border-radius: 0;
+      }
+    }
+
+    @keyframes finalPop {
+      0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.95);
+      }
+
+      100% {
+        opacity: 1;
         transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes heartBeat {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      45% {
+        transform: scale(1.08);
+      }
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translate3d(0, -20px, 0) rotate(0deg);
+        opacity: 0;
+      }
+
+      12% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate3d(var(--drift), 110vh, 0) rotate(360deg);
+        opacity: 0;
       }
     }
 
     @media (max-width: 380px) {
       .card {
-        padding: 22px 14px;
+        padding: 26px 16px;
         border-radius: 28px;
       }
 
-      .pixel-art {
-        width: min(76vw, 260px);
-        max-height: 38vh;
-        margin-bottom: 18px;
+      .badge {
+        width: 54px;
+        height: 54px;
+        margin-bottom: 16px;
       }
 
-      h1 {
-        margin-bottom: 14px;
-        font-size: clamp(1.3rem, 6.2vw, 1.64rem);
-      }
-
-      .countdown-grid {
-        gap: 6px;
-      }
-
-      .countdown-box {
-        padding: 12px 4px 10px;
-        border-radius: 16px;
+      .hint {
+        margin-bottom: 20px;
       }
     }
 
@@ -200,7 +459,11 @@
       }
 
       .page {
-        padding-block: 32px;
+        padding-block: 34px;
+      }
+
+      .actions {
+        gap: 14px;
       }
     }
 
@@ -217,100 +480,153 @@
   </style>
 </head>
 <body>
-  <main class="page">
+  <main class="page" id="game">
+    <div class="decor" aria-hidden="true">
+      <span class="heart d1">♥</span>
+      <span class="spark d2">✦</span>
+      <span class="flower d3">✿</span>
+      <span class="heart d4">♡</span>
+      <span class="spark d5">✧</span>
+      <span class="flower d6">✽</span>
+    </div>
+
     <section class="card" aria-live="polite">
-      <img src="./betul-pixel.png" alt="Pixel art" class="pixel-art" />
+      <div class="badge" aria-hidden="true">🌸</div>
+      <h1>Minik bir oyun 🌸</h1>
+      <p class="question">Cuma günü buluşmayı onaylıyor musun?</p>
+      <p class="hint" id="hint"></p>
 
-      <h1>Buluşmaya kalan süre</h1>
-
-      <div class="countdown" id="countdown">
-        <div class="countdown-grid" aria-label="Geri sayım">
-          <div class="countdown-box">
-            <span class="countdown-number" data-unit="days">00</span>
-            <span class="countdown-label">Gün</span>
-          </div>
-          <div class="countdown-box">
-            <span class="countdown-number" data-unit="hours">00</span>
-            <span class="countdown-label">Saat</span>
-          </div>
-          <div class="countdown-box">
-            <span class="countdown-number" data-unit="minutes">00</span>
-            <span class="countdown-label">Dakika</span>
-          </div>
-          <div class="countdown-box">
-            <span class="countdown-number" data-unit="seconds">00</span>
-            <span class="countdown-label">Saniye</span>
-          </div>
-        </div>
-
-        <p class="expired-message">Vakit geldi 🌸</p>
+      <div class="actions">
+        <button class="yes-button" id="yesButton" type="button">Evet 💖</button>
+        <button class="no-button" id="noButton" type="button">Hayır 😅</button>
       </div>
     </section>
   </main>
 
+  <section class="final" id="finalScreen" aria-live="polite" aria-hidden="true">
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+    <div class="final-card">
+      <div class="final-icon" aria-hidden="true">💖</div>
+      <h2>Evet seçildi 💖</h2>
+      <p class="final-message">Buluşma modu aktif.</p>
+      <p class="final-sub">🌸</p>
+    </div>
+  </section>
+
   <script>
-    const targetDate = new Date("2026-05-29T16:00:00+03:00");
+    const hintMessages = [
+    ];
 
-    const countdown = document.getElementById("countdown");
-    const numberElements = {
-      days: document.querySelector('[data-unit="days"]'),
-      hours: document.querySelector('[data-unit="hours"]'),
-      minutes: document.querySelector('[data-unit="minutes"]'),
-      seconds: document.querySelector('[data-unit="seconds"]')
-    };
+    const yesButton = document.getElementById("yesButton");
+    const noButton = document.getElementById("noButton");
+    const hint = document.getElementById("hint");
+    const finalScreen = document.getElementById("finalScreen");
+    const confetti = document.getElementById("confetti");
 
-    let countdownTimer = null;
+    // Hayır butonuna her basıldığında bu değer artar.
+    let noCount = 0;
+    let finalOpened = false;
 
-    function padNumber(value) {
-      return String(value).padStart(2, "0");
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
     }
 
-    function setNumber(unit, value) {
-      const element = numberElements[unit];
-      const nextValue = padNumber(value);
+    function updateHint() {
+      const messageIndex = clamp(noCount, 0, hintMessages.length - 1);
 
-      if (element.textContent === nextValue) {
+      hint.classList.add("is-changing");
+
+      window.setTimeout(() => {
+        hint.textContent = hintMessages[messageIndex];
+        hint.classList.remove("is-changing");
+      }, 150);
+    }
+
+    function updateButtonSizes() {
+      // noCount arttıkça Evet büyür, Hayır daha utangaç hale gelir.
+      const yesScale = 1 + noCount * 0.16;
+      const yesWidth = 220 + noCount * 28;
+      const yesFont = 1.06 + noCount * 0.08;
+      const yesPadY = 16 + noCount * 2;
+      const yesPadX = 24 + noCount * 4;
+
+      const noScale = clamp(1 - noCount * 0.1, 0.36, 1);
+      const noOpacity = clamp(1 - noCount * 0.12, 0.24, 1);
+      const noFont = clamp(0.98 - noCount * 0.055, 0.68, 0.98);
+
+      yesButton.style.setProperty("--yes-scale", yesScale);
+      yesButton.style.setProperty("--yes-width", `${yesWidth}px`);
+      yesButton.style.setProperty("--yes-font", `${yesFont}rem`);
+      yesButton.style.setProperty("--yes-padding", `${yesPadY}px ${yesPadX}px`);
+
+      noButton.style.setProperty("--no-scale", noScale);
+      noButton.style.setProperty("--no-opacity", noOpacity);
+      noButton.style.setProperty("--no-font", `${noFont}rem`);
+    }
+
+    function activateDestinyButton() {
+      // 6. Hayır sonrası Evet butonu tüm ekranı devralır.
+      yesButton.classList.add("is-destiny");
+      noButton.disabled = true;
+      noButton.setAttribute("aria-hidden", "true");
+    }
+
+    function createConfetti() {
+      // Final ekranındaki küçük kalp/confetti parçaları.
+      const icons = ["💖", "💕", "🌸", "✦", "♡"];
+
+      confetti.innerHTML = "";
+
+      for (let index = 0; index < 30; index += 1) {
+        const piece = document.createElement("span");
+        const icon = icons[index % icons.length];
+        const x = Math.round(Math.random() * 100);
+        const drift = Math.round((Math.random() - 0.5) * 90);
+        const size = (0.9 + Math.random() * 0.9).toFixed(2);
+        const duration = (3.2 + Math.random() * 2.2).toFixed(2);
+        const delay = (Math.random() * 1.2).toFixed(2);
+        const rotate = Math.round(Math.random() * 80 - 40);
+
+        piece.textContent = icon;
+        piece.style.setProperty("--x", `${x}%`);
+        piece.style.setProperty("--drift", `${drift}px`);
+        piece.style.setProperty("--size", `${size}rem`);
+        piece.style.setProperty("--duration", `${duration}s`);
+        piece.style.setProperty("--delay", `${delay}s`);
+        piece.style.setProperty("--rotate", `${rotate}deg`);
+
+        confetti.appendChild(piece);
+      }
+    }
+
+    function openFinalScreen() {
+      if (finalOpened) {
         return;
       }
 
-      element.textContent = nextValue;
-      element.classList.remove("tick");
-
-      window.requestAnimationFrame(() => {
-        element.classList.add("tick");
-      });
+      finalOpened = true;
+      createConfetti();
+      finalScreen.classList.add("is-visible");
+      finalScreen.setAttribute("aria-hidden", "false");
+      yesButton.disabled = true;
+      noButton.disabled = true;
     }
 
-    function finishCountdown() {
-      countdown.classList.add("is-finished");
-
-      if (countdownTimer) {
-        window.clearInterval(countdownTimer);
-      }
-    }
-
-    function updateCountdown() {
-      const remaining = targetDate.getTime() - Date.now();
-
-      if (remaining <= 0) {
-        finishCountdown();
+    noButton.addEventListener("click", () => {
+      if (finalOpened) {
         return;
       }
 
-      const totalSeconds = Math.floor(remaining / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
+      noCount += 1;
+      updateHint();
+      updateButtonSizes();
 
-      setNumber("days", days);
-      setNumber("hours", hours);
-      setNumber("minutes", minutes);
-      setNumber("seconds", seconds);
-    }
+      if (noCount >= 6) {
+        activateDestinyButton();
+      }
+    });
 
-    updateCountdown();
-    countdownTimer = window.setInterval(updateCountdown, 1000);
+    yesButton.addEventListener("click", openFinalScreen);
   </script>
 </body>
 </html>
